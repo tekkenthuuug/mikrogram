@@ -7,9 +7,8 @@ const GlobalStyle = createGlobalStyle`
     margin: 0px;
   }
 
-  button {
+  button, input[type='button'] {
     outline: none;
-    border: none;
     background: none;
     cursor: pointer;
   }

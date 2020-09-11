@@ -16,7 +16,7 @@ const Header: React.FC<{}> = () => {
       <RightContainer>
         <ThemeSelector />
         <LanguageSelector />
-        <CustomButton>{t('singin')}</CustomButton>
+        <CustomButton type='button' value={t('singin')!} />
       </RightContainer>
     </HeaderContainer>
   );

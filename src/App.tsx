@@ -7,6 +7,7 @@ import { ThemeProvider, DefaultThemeType } from 'styled-components';
 import Header from './components/header/header';
 import Home from './pages/home/home';
 import { LOCAL_STORAGE_KEYS, ROUTES } from './constants';
+import LoadingScreen from './components/loading-screen/loading-screen';
 
 function App() {
   const localStorageTheme = localStorage.getItem(
@@ -28,15 +29,15 @@ function App() {
   };
 
   return (
-    <Suspense fallback={<div>XD</div>}>
-      <ThemeProvider theme={{ ...theme, toggleTheme }}>
+    <ThemeProvider theme={{ ...theme, toggleTheme }}>
+      <Suspense fallback={<LoadingScreen />}>
         <GlobalStyle />
         <Header />
         <Switch>
           <Route path={ROUTES.home} component={Home} />
         </Switch>
-      </ThemeProvider>
-    </Suspense>
+      </Suspense>
+    </ThemeProvider>
   );
 }
 

@@ -8,7 +8,7 @@ export const HomeContainer = styled.main`
 
   font-family: ${props => props.theme.fonts.primary};
 
-  padding: 32px 0;
+  padding-bottom: 32px;
 `;
 
 export const Heading = styled.h1`
@@ -22,6 +22,11 @@ export const CustomButton = styled(CustomButtonComponent)`
   width: 50px;
   height: 50px;
   margin-top: 12px;
+`;
+
+export const FileName = styled.div`
+  margin-top: 12px;
+  color: ${props => props.theme.colors.text};
 `;
 
 export const ItemList = styled.div`

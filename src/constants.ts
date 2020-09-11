@@ -20,3 +20,5 @@ export const AVAILABLE_LANGUAGES = [
 export const LOCAL_STORAGE_KEYS = {
   theme: 'theme',
 };
+
+export const ALLOWED_IMAGE_EXTENSIONS = ['png', 'jpeg', 'jpg'];

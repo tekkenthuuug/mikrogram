@@ -1,6 +1,6 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-export const CustomButtonContainer = styled.button`
+const buttonCss = css`
   font-size: 1.44em;
 
   border: 3px solid ${props => props.theme.colors.accent};
@@ -18,4 +18,26 @@ export const CustomButtonContainer = styled.button`
     background-color: ${props => props.theme.colors.accent};
     color: ${props => props.theme.colors.buttonHoverText};
   }
+`;
+
+export const CustomButtonContainer = styled.input`
+  ${buttonCss}
+`;
+
+export const CustomFileInput = styled.input`
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+`;
+
+export const FileLabel = styled.label`
+  ${buttonCss}
+  cursor: pointer;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;

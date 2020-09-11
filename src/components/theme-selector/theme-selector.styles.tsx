@@ -17,7 +17,7 @@ interface ISelector {
 }
 
 const darkSelectorCss = css`
-  left: 33px;
+  left: 34px;
   transform: scale(-1, -1);
 `;
 const lightSelectorCss = css`

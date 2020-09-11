@@ -1,13 +1,33 @@
 import React from 'react';
-import { CustomButtonContainer } from './custom-button.styles';
+import {
+  CustomButtonContainer,
+  CustomFileInput,
+  FileLabel,
+} from './custom-button.styles';
 
 interface Props {}
 
 const CustomButton: React.FC<
-  Props & React.ButtonHTMLAttributes<HTMLButtonElement>
-> = ({ children, ...otherProps }) => {
+  Props & React.InputHTMLAttributes<HTMLInputElement>
+> = ({ type, name, className, value, ...props }) => {
+  if (type === 'file') {
+    return (
+      <>
+        <CustomFileInput name={name} id={name} type={type} {...props} />
+        <FileLabel className={className} htmlFor={name}>
+          {value}
+        </FileLabel>
+      </>
+    );
+  }
+
   return (
-    <CustomButtonContainer {...otherProps}>{children}</CustomButtonContainer>
+    <CustomButtonContainer
+      value={value}
+      className={className}
+      type={type}
+      {...props}
+    />
   );
 };
 

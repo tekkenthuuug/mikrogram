@@ -1,25 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Suspense, useState } from 'react';
+import { Route, Switch } from 'react-router-dom';
+import { darkTheme, lightTheme } from './styles/themes';
+import GlobalStyle from './styles/GlobalStyles';
+import { ThemeProvider, DefaultThemeType } from 'styled-components';
+
+import Header from './components/header/header';
+import Home from './pages/home/home';
+import { LOCAL_STORAGE_KEYS, ROUTES } from './constants';
 
 function App() {
+  const localStorageTheme = localStorage.getItem(
+    LOCAL_STORAGE_KEYS.theme
+  ) as DefaultThemeType;
+
+  const [theme, setTheme] = useState(
+    localStorageTheme === 'dark' ? darkTheme : lightTheme
+  );
+
+  const toggleTheme = () => {
+    if (theme.type === 'dark') {
+      setTheme(lightTheme);
+      localStorage.setItem(LOCAL_STORAGE_KEYS.theme, 'light');
+    } else {
+      setTheme(darkTheme);
+      localStorage.setItem(LOCAL_STORAGE_KEYS.theme, 'dark');
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Suspense fallback={<div>XD</div>}>
+      <ThemeProvider theme={{ ...theme, toggleTheme }}>
+        <GlobalStyle />
+        <Header />
+        <Switch>
+          <Route path={ROUTES.home} component={Home} />
+        </Switch>
+      </ThemeProvider>
+    </Suspense>
   );
 }
 

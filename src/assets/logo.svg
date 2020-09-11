@@ -1,0 +1,7 @@
+<svg id="Logo" xmlns="http://www.w3.org/2000/svg" width="81" height="70" viewBox="0 0 81 70">
+  <path id="Polygon_1" data-name="Polygon 1" d="M60.75,0,81,35,60.75,70H20.25L0,35,20.25,0Z" id="logo-outer-poly" />
+  <path id="Polygon_2" data-name="Polygon 2" d="M48.75,0,65,28,48.75,56H16.25L0,28,16.25,0Z" transform="translate(8 7)" id="logo-inner-poly"  />
+  <path id="Path_1" data-name="Path 1" d="M27,12,20.25,24H6.75l5.316-12Z" transform="translate(51.5 22.5) rotate(90)" id='logo-cube'/>
+  <path id="Path_2" data-name="Path 2" d="M20.25,12,13.5,0H0L5.316,12Z" transform="translate(53.5 29.25) rotate(90)" id='logo-cube'/>
+  <path id="Path_3" data-name="Path 3" d="M67,63.576,79,58.24,67,52.7,55.016,58.25Z" transform="translate(-26.5 -33)" id='logo-cube'/>
+</svg>

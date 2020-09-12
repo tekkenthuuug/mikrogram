@@ -1,10 +1,9 @@
 import styled, { css } from 'styled-components';
+import { Link } from 'react-router-dom';
 
-const buttonCss = css`
+const defaultButtonCss = css`
   font-size: 1.44em;
 
-  border: 3px solid ${props => props.theme.colors.accent};
-  color: ${props => props.theme.colors.buttonText};
   border-radius: 12px;
 
   padding: 6px 30px;
@@ -13,6 +12,10 @@ const buttonCss = css`
   font-weight: bold;
 
   transition: all 0.15s ease;
+  cursor: pointer;
+
+  border: 3px solid ${props => props.theme.colors.accent};
+  color: ${props => props.theme.colors.buttonText};
 
   &:hover {
     background-color: ${props => props.theme.colors.accent};
@@ -21,7 +24,7 @@ const buttonCss = css`
 `;
 
 export const CustomButtonContainer = styled.input`
-  ${buttonCss}
+  ${defaultButtonCss}
 `;
 
 export const CustomFileInput = styled.input`
@@ -34,10 +37,13 @@ export const CustomFileInput = styled.input`
 `;
 
 export const FileLabel = styled.label`
-  ${buttonCss}
-  cursor: pointer;
+  ${defaultButtonCss}
 
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+export const CustomLink = styled(Link)`
+  ${defaultButtonCss}
 `;

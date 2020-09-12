@@ -1,4 +1,15 @@
 {
-  "singin": "Sing in",
-  "latestPosts": "Latest posts"
+  "signin": "Sign in",
+  "signup": "Sign up",
+  "noAccount": {
+    "text": "Don't have an account yet? ",
+    "link": "Sign up!"
+  },
+  "email": "Email",
+  "hasAccount": "Already registered? ",
+  "latestPosts": "Latest posts",
+  "signOut": "Sign out",
+  "username": "Username",
+  "password": "Password",
+  "signInWithGoogle": "Sign in with Google"
 }

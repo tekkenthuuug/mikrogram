@@ -1,4 +1,15 @@
 {
-  "singin": "Войти",
-  "latestPosts": "Последние посты"
+  "signin": "Войти",
+  "signup": "Регистрация",
+  "noAccount": {
+    "text": "Еще не зарегестрирован? ",
+    "link": "Создай аккаунт!"
+  },
+  "email": "Email",
+  "hasAccount": "Уже имеешь аккаунт? ",
+  "latestPosts": "Последние посты",
+  "signOut": "Выйти",
+  "username": "Имя пользователя",
+  "password": "Пароль",
+  "signInWithGoogle": "Войти используя Google"
 }

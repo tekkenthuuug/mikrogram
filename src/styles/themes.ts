@@ -12,6 +12,9 @@ export const lightTheme: DefaultTheme = {
     primaryBackgroundColor: '#FFF',
     primaryBackgroundColorHover: '#EEE',
     placeholderBackground: '#BCBCBC',
+    formBackground: '#EEE',
+    formInput: '#878787',
+    formInputFocus: '#4FD176',
   },
   fonts: {
     primary: "'Roboto Mono', sans-serif",

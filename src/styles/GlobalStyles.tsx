@@ -8,10 +8,19 @@ const GlobalStyle = createGlobalStyle`
   }
 
   button, input[type='button'] {
-    outline: none;
-    background: none;
     cursor: pointer;
   }
+
+  a {
+    text-decoration: none;
+  }
+
+  button, input {
+    outline: none;
+    background: none;
+    border: none;
+  }
+
 
   body {
     background-color: ${props => props.theme.colors.primaryBackgroundColor};

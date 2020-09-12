@@ -15,6 +15,9 @@ declare module 'styled-components' {
       primaryBackgroundColor: string;
       primaryBackgroundColorHover: string;
       placeholderBackground: string;
+      formBackground: string;
+      formInput: string;
+      formInputFocus: string;
     };
     fonts: {
       primary: string;

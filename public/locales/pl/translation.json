@@ -1,4 +1,15 @@
 {
-  "singin": "Zaloguj się",
-  "latestPosts": "Najnowsze posty"
+  "signin": "Zaloguj się",
+  "signup": "Utwórz konto",
+  "noAccount": {
+    "text": "Nie masz jeszcze konta? ",
+    "link": "Utwórz!"
+  },
+  "email": "Email",
+  "hasAccount": "Już masz konto? ",
+  "latestPosts": "Najnowsze posty",
+  "signOut": "Wyloguj się",
+  "username": "Imię użytkownika",
+  "password": "Hasło",
+  "signInWithGoogle": "Zaloguj się z Google"
 }

@@ -3,13 +3,17 @@ import {
   CustomButtonContainer,
   CustomFileInput,
   FileLabel,
+  CustomLink,
 } from './custom-button.styles';
 
-interface Props {}
+interface Props {
+  asLink?: boolean;
+  to?: string;
+}
 
 const CustomButton: React.FC<
   Props & React.InputHTMLAttributes<HTMLInputElement>
-> = ({ type, name, className, value, ...props }) => {
+> = ({ asLink, to = '/', type, name, className, value, ...props }) => {
   if (type === 'file') {
     return (
       <>
@@ -18,6 +22,14 @@ const CustomButton: React.FC<
           {value}
         </FileLabel>
       </>
+    );
+  }
+
+  if (asLink) {
+    return (
+      <CustomLink to={to} className={className}>
+        {value}
+      </CustomLink>
     );
   }
 

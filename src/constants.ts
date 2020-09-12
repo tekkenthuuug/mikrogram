@@ -1,5 +1,12 @@
 export const ROUTES = {
   home: '/',
+  signin: '/signin',
+  signup: '/signup',
+};
+
+export const REDIRECTS = {
+  USER_SIGN_UP: ROUTES.home,
+  USER_SIGN_IN: ROUTES.home,
 };
 
 export const AVAILABLE_LANGUAGES = [

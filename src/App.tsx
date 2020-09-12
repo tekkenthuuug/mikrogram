@@ -1,42 +1,41 @@
-import React, { Suspense, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { darkTheme, lightTheme } from './styles/themes';
 import GlobalStyle from './styles/GlobalStyles';
-import { ThemeProvider, DefaultThemeType } from 'styled-components';
+import { ThemeProvider } from 'styled-components';
 
 import Header from './components/header/header';
 import Home from './pages/home/home';
-import { LOCAL_STORAGE_KEYS, ROUTES } from './constants';
+import { ROUTES } from './constants';
 import LoadingScreen from './components/loading-screen/loading-screen';
+import SignIn from './pages/sign-in/sign-in';
+import SignUp from './pages/sign-up/sign-up';
+import useThemeState from './utils/useThemeState';
+import { User } from './types';
+import { listenToAuthState } from './firebase/auth';
+import { UserContext } from './context/user.context';
 
 function App() {
-  const localStorageTheme = localStorage.getItem(
-    LOCAL_STORAGE_KEYS.theme
-  ) as DefaultThemeType;
+  const { theme } = useThemeState();
+  const [user, setUser] = useState<null | User>(null);
 
-  const [theme, setTheme] = useState(
-    localStorageTheme === 'dark' ? darkTheme : lightTheme
-  );
-
-  const toggleTheme = () => {
-    if (theme.type === 'dark') {
-      setTheme(lightTheme);
-      localStorage.setItem(LOCAL_STORAGE_KEYS.theme, 'light');
-    } else {
-      setTheme(darkTheme);
-      localStorage.setItem(LOCAL_STORAGE_KEYS.theme, 'dark');
-    }
-  };
-
+  useEffect(() => {
+    listenToAuthState((user, error) => {
+      setUser(user);
+    });
+  }, []);
   return (
-    <ThemeProvider theme={{ ...theme, toggleTheme }}>
-      <Suspense fallback={<LoadingScreen />}>
-        <GlobalStyle />
-        <Header />
-        <Switch>
-          <Route path={ROUTES.home} component={Home} />
-        </Switch>
-      </Suspense>
+    <ThemeProvider theme={theme}>
+      <UserContext.Provider value={user}>
+        <Suspense fallback={<LoadingScreen />}>
+          <GlobalStyle />
+          <Header />
+          <Switch>
+            <Route exact path={ROUTES.home} component={Home} />
+            <Route path={ROUTES.signin} component={SignIn} />
+            <Route path={ROUTES.signup} component={SignUp} />
+          </Switch>
+        </Suspense>
+      </UserContext.Provider>
     </ThemeProvider>
   );
 }

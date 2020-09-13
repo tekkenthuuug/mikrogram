@@ -15,6 +15,7 @@ export const lightTheme: DefaultTheme = {
     formBackground: '#EEE',
     formInput: '#878787',
     formInputFocus: '#4FD176',
+    errorColor: '#ff0000',
   },
   fonts: {
     primary: "'Roboto Mono', sans-serif",

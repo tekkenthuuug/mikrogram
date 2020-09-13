@@ -9,20 +9,19 @@ export const REDIRECTS = {
   USER_SIGN_IN: ROUTES.home,
 };
 
-export const AVAILABLE_LANGUAGES = [
-  {
-    lang: 'en',
+export const FALLBACK_LANG = 'en';
+
+export const AVAILABLE_LANGUAGES = {
+  en: {
     name: 'EN',
   },
-  {
-    lang: 'ru',
+  ru: {
     name: 'RU',
   },
-  {
-    lang: 'pl',
+  pl: {
     name: 'PL',
   },
-];
+};
 
 export const LOCAL_STORAGE_KEYS = {
   theme: 'theme',

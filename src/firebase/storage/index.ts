@@ -4,6 +4,7 @@ import { storage } from '..';
 import { createImageDocument } from '../firestore';
 
 const storageRef = storage.ref();
+const postImagesFolderRef = storageRef.child('post-images');
 
 interface IUploadCallbacks {
   next?: (snapshot: firebase.storage.UploadTaskSnapshot) => any;
@@ -18,7 +19,7 @@ export const uploadFileToStorage = async (
 ) => {
   const id = v4();
 
-  const newFileRef = storageRef.child(id);
+  const newFileRef = postImagesFolderRef.child(id);
 
   const uploadTask = newFileRef.put(file);
 
@@ -26,8 +27,15 @@ export const uploadFileToStorage = async (
 
   const unscubscribe = subscribe({
     ...callbacks,
+    next: (snapshot: firebase.storage.UploadTaskSnapshot) => {
+      try {
+        if (callbacks.next) callbacks.next(snapshot);
+      } catch (error) {
+        if (callbacks.error) callbacks.error(error);
+      }
+    },
     complete: async () => {
-      const downloadURL = await storageRef.child(id).getDownloadURL();
+      const downloadURL = await postImagesFolderRef.child(id).getDownloadURL();
 
       await createImageDocument(downloadURL, ownerId);
 

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AVAILABLE_LANGUAGES } from '../../constants';
+import getLanguage from '../../utils/getCurrentLanguage';
 
 import {
   LangSelectorContainer,
@@ -17,22 +18,19 @@ const LanguageSelector = () => {
     i18n.changeLanguage(lang);
   };
 
-  const currentLanguage = i18n.language;
+  const currentLanguage = getLanguage(i18n);
 
   return (
     <LangSelectorContainer onClick={() => setOpened(!opened)}>
       <SelectedLang>{currentLanguage}</SelectedLang>
       {opened && (
         <Dropdown>
-          {AVAILABLE_LANGUAGES.map(langObj => {
-            if (currentLanguage === langObj.lang) return undefined;
+          {Object.entries(AVAILABLE_LANGUAGES).map(([lang, { name }]) => {
+            if (currentLanguage === lang) return undefined;
 
             return (
-              <div
-                key={langObj.lang}
-                onClick={() => changeLanguage(langObj.lang)}
-              >
-                {langObj.name}
+              <div key={lang} onClick={() => changeLanguage(lang)}>
+                {name}
               </div>
             );
           })}

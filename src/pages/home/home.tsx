@@ -1,81 +1,57 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router-dom';
-import { ALLOWED_IMAGE_EXTENSIONS, ROUTES } from '../../constants';
-import { UserContext } from '../../context/user.context';
-import { uploadFileToStorage } from '../../firebase/storage';
-import getFileExtension from '../../utils/getFileExtension';
+import { AnimateSharedLayout } from 'framer-motion';
+import ImageUploader from '../../components/image-uploader/image-uploader';
+import PostCard from '../../components/post-card/post-card';
+import { listenForImageCollection } from '../../firebase/firestore';
+import { PostWithOwner } from '../../types';
 
-import {
-  HomeContainer,
-  Heading,
-  CustomButton,
-  FileName,
-  ItemList,
-} from './home.styles';
+import { HomeContainer, Heading, Items } from './home.styles';
 
 const Home: React.FC<{}> = props => {
   const { t } = useTranslation();
-  const user = useContext(UserContext);
-  const history = useHistory();
-  const [file, setFile] = useState<File | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [progress, setProgress] = useState(0);
+  const [posts, setPosts] = useState<PostWithOwner[] | null>(null);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-
-    if (!files || !files.length) {
-      return;
-    }
-
-    const file = files[0];
-
-    if (ALLOWED_IMAGE_EXTENSIONS.includes(getFileExtension(file.name))) {
-      setFile(file);
-      setError(null);
-    } else {
-      setError('Wrong file extension');
-    }
-  };
+  // turns true only when layoutRef was not null and received new posts
+  // doing that we animating only new posts, not initially loaded one
+  const [animateCard, setAnimateCard] = useState(false);
+  const layoutRef = useRef(null);
 
   useEffect(() => {
-    if (!file || !user) return;
-
+    let unsubscribe: null | (() => void) = null;
     (async () => {
-      await uploadFileToStorage(file, user.uid, {
-        next: snapshot => {
-          const progress = Math.round(
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-          );
+      unsubscribe = await listenForImageCollection(async postDocs => {
+        setPosts(postDocs);
 
-          setProgress(progress);
-        },
-        error: error => {
-          setError(error.message);
-        },
+        if (!animateCard && layoutRef) {
+          setAnimateCard(true);
+        }
       });
     })();
-  }, [file, user]);
+
+    return () => {
+      if (unsubscribe) unsubscribe();
+    };
+  }, [animateCard]);
 
   return (
     <HomeContainer>
       <Heading>{t('latestPosts')}</Heading>
-      <CustomButton
-        type='file'
-        name='image'
-        value='+'
-        onClick={e => {
-          if (!user) {
-            e.preventDefault();
-            history.push(ROUTES.signin);
-          }
-        }}
-        onChange={handleFileChange}
-      />
-      {file && <div>{progress}</div>}
-      {(file || error) && <FileName>{file?.name || error}</FileName>}
-      <ItemList></ItemList>
+      <ImageUploader />
+      {posts && (
+        <AnimateSharedLayout ref={layoutRef}>
+          <Items layout>
+            {posts.map(post => (
+              <PostCard
+                layoutId={`post-card-${post.id}`}
+                key={post.id}
+                postData={post}
+                withAnimation={animateCard}
+              />
+            ))}
+          </Items>
+        </AnimateSharedLayout>
+      )}
     </HomeContainer>
   );
 };

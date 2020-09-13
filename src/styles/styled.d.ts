@@ -18,6 +18,7 @@ declare module 'styled-components' {
       formBackground: string;
       formInput: string;
       formInputFocus: string;
+      errorColor: string;
     };
     fonts: {
       primary: string;

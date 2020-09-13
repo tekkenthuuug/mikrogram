@@ -24,8 +24,6 @@ const GlobalStyle = createGlobalStyle`
 
   body {
     background-color: ${props => props.theme.colors.primaryBackgroundColor};
-
-    transition: background-color 0.2s ease;
   }
 `;
 

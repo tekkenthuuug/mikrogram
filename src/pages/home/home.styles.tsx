@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import CustomButtonComponent from '../../components/custom-button/custom-button';
+import { motion } from 'framer-motion';
 
 export const HomeContainer = styled.main`
   display: flex;
@@ -16,31 +16,11 @@ export const Heading = styled.h1`
   font-size: 50px;
 `;
 
-export const CustomButton = styled(CustomButtonComponent)`
-  border-radius: 50%;
-  padding: 0;
-  width: 50px;
-  height: 50px;
-  margin-top: 12px;
-`;
-
-export const FileName = styled.div`
-  margin-top: 12px;
-  color: ${props => props.theme.colors.text};
-`;
-
-export const ItemList = styled.div`
+export const Items = styled(motion.div)`
   margin-top: 22px;
 
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 40px;
-
-  & > div {
-    width: 350px;
-    height: 420px;
-
-    background-color: ${props => props.theme.colors.placeholderBackground};
-  }
 `;

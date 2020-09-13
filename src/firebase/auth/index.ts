@@ -49,7 +49,7 @@ export const firebaseSignOut = async () => await auth.signOut();
 export const listenToAuthState = (
   callback: (user: User | null, error: firebase.auth.Error | null) => any
 ) => {
-  auth.onAuthStateChanged(
+  return auth.onAuthStateChanged(
     async user => {
       const userRef = await createUserProfileDocument(user);
 

@@ -19,14 +19,16 @@ function App() {
   const [user, setUser] = useState<null | User>(null);
 
   useEffect(() => {
-    listenToAuthState((user, error) => {
+    const unsubscribe = listenToAuthState((user, error) => {
       setUser(user);
     });
+
+    return () => unsubscribe();
   }, []);
   return (
     <ThemeProvider theme={theme}>
-      <UserContext.Provider value={user}>
-        <Suspense fallback={<LoadingScreen />}>
+      <Suspense fallback={<LoadingScreen />}>
+        <UserContext.Provider value={user}>
           <GlobalStyle />
           <Header />
           <Switch>
@@ -34,8 +36,8 @@ function App() {
             <Route path={ROUTES.signin} component={SignIn} />
             <Route path={ROUTES.signup} component={SignUp} />
           </Switch>
-        </Suspense>
-      </UserContext.Provider>
+        </UserContext.Provider>
+      </Suspense>
     </ThemeProvider>
   );
 }

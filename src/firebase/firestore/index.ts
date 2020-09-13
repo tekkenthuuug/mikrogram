@@ -2,6 +2,7 @@ import firebase from 'firebase';
 import { firestore } from '..';
 
 export const userCollectionRef = firestore.collection('users');
+export const imageCollectionRef = firestore.collection('images');
 
 export const createUserProfileDocument = async (
   user: firebase.User | null,
@@ -23,4 +24,24 @@ export const createUserProfileDocument = async (
   }
 
   return userRef;
+};
+
+export const createImageDocument = async (
+  imageURL: string,
+  ownerId: string
+) => {
+  const userRef = userCollectionRef.doc(ownerId);
+
+  const userSnapshot = await userRef.get();
+
+  if (!userSnapshot.exists) {
+    return;
+  }
+
+  const imageRef = await imageCollectionRef.add({
+    imageURL,
+    ownerId,
+  });
+
+  return imageRef;
 };

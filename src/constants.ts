@@ -2,6 +2,8 @@ export const ROUTES = {
   home: '/',
   signin: '/signin',
   signup: '/signup',
+  post: '/p',
+  profile: '/profile',
 };
 
 export const REDIRECTS = {

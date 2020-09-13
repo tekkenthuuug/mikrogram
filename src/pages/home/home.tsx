@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AnimateSharedLayout } from 'framer-motion';
 import ImageUploader from '../../components/image-uploader/image-uploader';
@@ -7,11 +7,17 @@ import { listenForImageCollection } from '../../firebase/firestore';
 import { PostWithOwner } from '../../types';
 
 import { HomeContainer, Heading, Items } from './home.styles';
+import { CacheContext } from '../../context/cache.context';
 
-const Home: React.FC<{}> = props => {
+interface Props {}
+
+const Home: React.FC<Props> = () => {
+  const { cache, setCache } = useContext(CacheContext)!;
+
   const { t } = useTranslation();
-  const [posts, setPosts] = useState<PostWithOwner[] | null>(null);
-
+  const [posts, setPosts] = useState<PostWithOwner[] | null>(
+    cache.posts.length ? cache.posts : null
+  );
   // turns true only when layoutRef was not null and received new posts
   // doing that we animating only new posts, not initially loaded one
   const [animateCard, setAnimateCard] = useState(false);
@@ -23,6 +29,8 @@ const Home: React.FC<{}> = props => {
       unsubscribe = await listenForImageCollection(async postDocs => {
         setPosts(postDocs);
 
+        setCache('posts', postDocs);
+
         if (!animateCard && layoutRef) {
           setAnimateCard(true);
         }
@@ -32,7 +40,7 @@ const Home: React.FC<{}> = props => {
     return () => {
       if (unsubscribe) unsubscribe();
     };
-  }, [animateCard]);
+  }, [animateCard, setCache]);
 
   return (
     <HomeContainer>

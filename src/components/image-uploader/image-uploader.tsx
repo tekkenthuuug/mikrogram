@@ -73,9 +73,16 @@ const ImageUploader: React.FC<Props> = props => {
         error: error => {
           setError(error.message);
         },
+        complete: () => {
+          if (!error) {
+            setTimeout(() => {
+              setDisplayLoading(false);
+            }, 3000);
+          }
+        },
       });
     })();
-  }, [file, user]);
+  }, [file, user, error]);
 
   return (
     <>

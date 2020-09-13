@@ -1,10 +1,20 @@
 import React from 'react';
-import { Post } from '../../types';
+import { Link } from 'react-router-dom';
+import { ROUTES } from '../../constants';
+import { PostWithOwner } from '../../types';
 
-import { PostCardContainer, Image, PostCardVariants } from './post-card.styles';
+import {
+  PostCardContainer,
+  Image,
+  PostCardVariants,
+  OwnerContainer,
+  OwnerImg,
+  OwnerNameLink,
+  InteractionsContainer,
+} from './post-card.styles';
 
 interface Props {
-  postData: Post;
+  postData: PostWithOwner;
   layoutId?: string;
   withAnimation?: boolean;
 }
@@ -14,6 +24,8 @@ const PostCard: React.FC<Props> = ({
   layoutId,
   withAnimation = false,
 }) => {
+  const { owner, imageURL, ownerId } = postData;
+
   return (
     <PostCardContainer
       variants={withAnimation ? PostCardVariants : undefined}
@@ -21,7 +33,18 @@ const PostCard: React.FC<Props> = ({
       animate='visible'
       layoutId={layoutId}
     >
-      <Image src={postData.imageURL} />
+      <OwnerContainer>
+        <Link to={`${ROUTES.profile}/${ownerId}`}>
+          <OwnerImg src={owner.photoURL} />
+        </Link>
+        <OwnerNameLink to={`${ROUTES.profile}/${ownerId}`}>
+          {owner.displayName}
+        </OwnerNameLink>
+      </OwnerContainer>
+      <Link to={`${ROUTES.post}/${postData.id}`}>
+        <Image src={imageURL} />
+      </Link>
+      <InteractionsContainer></InteractionsContainer>
     </PostCardContainer>
   );
 };

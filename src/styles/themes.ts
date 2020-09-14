@@ -16,6 +16,7 @@ export const lightTheme: DefaultTheme = {
     formInput: '#878787',
     formInputFocus: '#4FD176',
     errorColor: '#ff0000',
+    loadingGradientColor: '#f0f0f0',
   },
   fonts: {
     primary: "'Roboto Mono', sans-serif",
@@ -38,6 +39,7 @@ export const darkTheme: DefaultTheme = {
     primaryBackgroundColor: '#3D3D3D',
     primaryBackgroundColorHover: '#5C5C5C',
     buttonHoverText: '#3D3D3D',
+    loadingGradientColor: '#4F4F4F',
   },
   logo: {
     ...lightTheme.logo,

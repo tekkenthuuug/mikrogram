@@ -8,6 +8,7 @@ import { PostWithOwner } from '../../types';
 
 import { HomeContainer, Heading, Items } from './home.styles';
 import { CacheContext } from '../../context/cache.context';
+import CardsSkeleton from '../../components/cards-skeleton/cards-skeleton';
 
 interface Props {}
 
@@ -24,21 +25,18 @@ const Home: React.FC<Props> = () => {
   const layoutRef = useRef(null);
 
   useEffect(() => {
-    let unsubscribe: null | (() => void) = null;
-    (async () => {
-      unsubscribe = await listenForImageCollection(async postDocs => {
-        setPosts(postDocs);
+    const unsubscribe = listenForImageCollection(postDocs => {
+      setPosts(postDocs);
 
-        setCache('posts', postDocs);
+      setCache('posts', postDocs);
 
-        if (!animateCard && layoutRef) {
-          setAnimateCard(true);
-        }
-      });
-    })();
+      if (!animateCard && layoutRef) {
+        setAnimateCard(true);
+      }
+    });
 
     return () => {
-      if (unsubscribe) unsubscribe();
+      unsubscribe();
     };
   }, [animateCard, setCache]);
 
@@ -46,7 +44,7 @@ const Home: React.FC<Props> = () => {
     <HomeContainer>
       <Heading>{t('latestPosts')}</Heading>
       <ImageUploader />
-      {posts && (
+      {posts ? (
         <AnimateSharedLayout ref={layoutRef}>
           <Items layout>
             {posts.map(post => (
@@ -59,6 +57,10 @@ const Home: React.FC<Props> = () => {
             ))}
           </Items>
         </AnimateSharedLayout>
+      ) : (
+        <Items layout>
+          <CardsSkeleton />
+        </Items>
       )}
     </HomeContainer>
   );

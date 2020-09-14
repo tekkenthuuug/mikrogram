@@ -19,21 +19,25 @@ import useAppCache from './utils/useAppCache';
 function App() {
   const { theme } = useThemeState();
   const [user, setUser] = useState<null | User>(null);
+  const [fetchingUser, setFetchingUser] = useState<boolean>(true);
   const appCache = useAppCache();
 
   useEffect(() => {
     const unsubscribe = listenToAuthState((user, error) => {
       setUser(user);
+      setFetchingUser(false);
     });
 
     return () => unsubscribe();
   }, []);
+
   return (
     <ThemeProvider theme={theme}>
       <Suspense fallback={<LoadingScreen />}>
         <CacheContext.Provider value={appCache}>
           <UserContext.Provider value={user}>
             <GlobalStyle />
+            {fetchingUser && <LoadingScreen />}
             <Header />
             <Switch>
               <Route exact path={ROUTES.home} component={Home} />

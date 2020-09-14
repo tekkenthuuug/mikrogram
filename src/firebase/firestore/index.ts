@@ -49,7 +49,7 @@ export const createImageDocument = async (
   return imageRef;
 };
 
-export const listenForImageCollection = async (
+export const listenForImageCollection = (
   callback: (posts: PostWithOwner[]) => any
 ) => {
   return postsCollectionRef

@@ -11,12 +11,13 @@ const useAppCache = (): IUseAppCache => {
     posts: [],
   });
 
-  const setCache = useCallback(
-    function setCache<K extends keyof AppCache>(key: K, data: AppCache[K]) {
-      cache.current[key] = data;
-    },
-    [cache]
-  );
+  const setCache = useCallback(function setCache<K extends keyof AppCache>(
+    key: K,
+    data: AppCache[K]
+  ) {
+    cache.current[key] = data;
+  },
+  []);
 
   return { cache: cache.current, setCache };
 };

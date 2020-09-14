@@ -7,11 +7,7 @@ const googleProvider = new firebase.auth.GoogleAuthProvider();
 
 const signInWith = (provider: firebase.auth.AuthProvider) => async () => {
   try {
-    const userAuth = await auth.signInWithPopup(provider);
-
-    const userRef = await createUserProfileDocument(userAuth.user);
-
-    return userRef;
+    await auth.signInWithRedirect(provider);
   } catch (error) {
     console.log('Error logging in with auth provider', error);
   }

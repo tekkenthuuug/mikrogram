@@ -12,7 +12,7 @@ interface IUploadCallbacks {
   complete?: () => any;
 }
 
-export const uploadFileToStorage = async (
+export const uploadFileToStorage = (
   file: File,
   ownerId: string,
   callbacks: IUploadCallbacks
@@ -44,5 +44,5 @@ export const uploadFileToStorage = async (
     },
   });
 
-  return file;
+  return uploadTask;
 };

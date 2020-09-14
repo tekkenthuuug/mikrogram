@@ -19,6 +19,7 @@ declare module 'styled-components' {
       formInput: string;
       formInputFocus: string;
       errorColor: string;
+      loadingGradientColor: string;
     };
     fonts: {
       primary: string;

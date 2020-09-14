@@ -61,27 +61,29 @@ const ImageUploader: React.FC<Props> = props => {
 
     setDisplayLoading(true);
 
-    (async () => {
-      await uploadFileToStorage(file, user.uid, {
-        next: snapshot => {
-          const progress = Math.round(
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-          );
+    let hideLoadingTimeout: number | null = null;
 
-          setProgress(progress);
-        },
-        error: error => {
-          setError(error.message);
-        },
-        complete: () => {
-          if (!error) {
-            setTimeout(() => {
-              setDisplayLoading(false);
-            }, 3000);
-          }
-        },
-      });
-    })();
+    const uploadTask = uploadFileToStorage(file, user.uid, {
+      next: snapshot => {
+        const progress = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+
+        setProgress(progress);
+      },
+      complete: () => {
+        if (!error) {
+          hideLoadingTimeout = setTimeout(() => {
+            setDisplayLoading(false);
+          }, 3000);
+        }
+      },
+    });
+
+    return () => {
+      uploadTask?.cancel();
+      if (hideLoadingTimeout) clearTimeout(hideLoadingTimeout);
+    };
   }, [file, user, error]);
 
   return (

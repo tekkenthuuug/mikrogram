@@ -19,7 +19,7 @@ import {
 interface Props {}
 
 const ImageUploader: React.FC<Props> = props => {
-  const user = useContext(UserContext);
+  const { currentUser } = useContext(UserContext)!;
   const history = useHistory();
   const [file, setFile] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -57,13 +57,13 @@ const ImageUploader: React.FC<Props> = props => {
   };
 
   useEffect(() => {
-    if (!file || !user) return;
+    if (!file || !currentUser) return;
 
     setDisplayLoading(true);
 
     let hideLoadingTimeout: number | null = null;
 
-    const uploadTask = uploadFileToStorage(file, user.uid, {
+    const uploadTask = uploadFileToStorage(file, currentUser.uid, {
       next: snapshot => {
         const progress = Math.round(
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100
@@ -84,7 +84,7 @@ const ImageUploader: React.FC<Props> = props => {
       uploadTask?.cancel();
       if (hideLoadingTimeout) clearTimeout(hideLoadingTimeout);
     };
-  }, [file, user, error]);
+  }, [file, currentUser, error]);
 
   return (
     <>
@@ -93,7 +93,7 @@ const ImageUploader: React.FC<Props> = props => {
         name='image'
         value='+'
         onClick={e => {
-          if (!user) {
+          if (!currentUser) {
             e.preventDefault();
             history.push(ROUTES.signin);
           }

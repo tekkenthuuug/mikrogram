@@ -11,31 +11,31 @@ import SignIn from './pages/sign-in/sign-in';
 import SignUp from './pages/sign-up/sign-up';
 import useThemeState from './utils/useThemeState';
 import { User } from './types';
-import { listenToAuthState } from './firebase/auth';
+import { getAuthState } from './firebase/auth';
 import { UserContext } from './context/user.context';
 import { CacheContext } from './context/cache.context';
 import useAppCache from './utils/useAppCache';
 
 function App() {
   const { theme } = useThemeState();
-  const [user, setUser] = useState<null | User>(null);
+  const [currentUser, setCurrentUser] = useState<null | User>(null);
   const [fetchingUser, setFetchingUser] = useState<boolean>(true);
   const appCache = useAppCache();
 
   useEffect(() => {
-    const unsubscribe = listenToAuthState((user, error) => {
-      setUser(user);
+    getAuthState((user, error) => {
+      setCurrentUser(user);
       setFetchingUser(false);
     });
-
-    return () => unsubscribe();
   }, []);
 
   return (
     <ThemeProvider theme={theme}>
       <Suspense fallback={<LoadingScreen />}>
         <CacheContext.Provider value={appCache}>
-          <UserContext.Provider value={user}>
+          <UserContext.Provider
+            value={{ currentUser, setCurrentUser, setFetchingUser }}
+          >
             <GlobalStyle />
             {fetchingUser && <LoadingScreen />}
             <Header />

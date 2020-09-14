@@ -22,11 +22,13 @@ export const createUserWithEmailAndPassword = async (
 ) => {
   const userAuth = await auth.createUserWithEmailAndPassword(email, password);
 
-  const userRef = await createUserProfileDocument(userAuth.user, {
+  const userRef = await createUserProfileDocument(userAuth.user!, {
     displayName: username,
   });
 
-  return userRef;
+  const userSnapshot = await userRef.get();
+
+  return userSnapshot.data() as User;
 };
 
 export const signInWithEmailAndPassword = async (
@@ -35,31 +37,38 @@ export const signInWithEmailAndPassword = async (
 ) => {
   const userAuth = await auth.signInWithEmailAndPassword(email, password);
 
-  const userRef = await createUserProfileDocument(userAuth.user);
+  if (userAuth.user) {
+    const userRef = await createUserProfileDocument(userAuth.user);
 
-  return userRef;
+    const userSnapshot = await userRef.get();
+
+    return userSnapshot.data() as User;
+  }
+
+  return null;
 };
 
 export const firebaseSignOut = async () => await auth.signOut();
 
-export const listenToAuthState = (
+export const getAuthState = (
   callback: (user: User | null, error: firebase.auth.Error | null) => any
 ) => {
-  return auth.onAuthStateChanged(
+  const unsubscribe = auth.onAuthStateChanged(
     async user => {
-      const userRef = await createUserProfileDocument(user);
+      unsubscribe();
 
-      const userSnap = await userRef?.get();
-
-      const userData = userSnap?.data();
-
-      if (!userData) {
+      if (!user) {
         callback(null, null);
-
         return;
       }
 
-      callback(userData as User, null);
+      const userRef = await createUserProfileDocument(user);
+
+      const userSnap = await userRef.get();
+
+      const userData = userSnap.data() as User;
+
+      callback(userData, null);
     },
     error => {
       callback(null, error);

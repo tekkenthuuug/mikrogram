@@ -13,7 +13,7 @@ import { HeaderContainer, RightContainer } from './header.styles';
 
 const Header: React.FC<{}> = () => {
   const { t } = useTranslation();
-  const currentUser = useContext(UserContext);
+  const { currentUser, setCurrentUser } = useContext(UserContext)!;
 
   return (
     <HeaderContainer>
@@ -27,7 +27,10 @@ const Header: React.FC<{}> = () => {
           <CustomButton
             type='button'
             value={t('signOut')!}
-            onClick={firebaseSignOut}
+            onClick={() => {
+              firebaseSignOut();
+              setCurrentUser(null);
+            }}
           />
         ) : (
           <CustomButton asLink to={ROUTES.signin} value={t('signin')!} />

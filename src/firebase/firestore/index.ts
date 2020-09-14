@@ -6,11 +6,9 @@ export const userCollectionRef = firestore.collection('users');
 export const postsCollectionRef = firestore.collection('posts');
 
 export const createUserProfileDocument = async (
-  user: firebase.User | null,
+  user: firebase.User,
   additionalData?: any
 ) => {
-  if (!user) return;
-
   const userRef = userCollectionRef.doc(user.uid);
 
   const userSnapshot = await userRef.get();

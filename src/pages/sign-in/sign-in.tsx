@@ -17,11 +17,12 @@ import { Link, useHistory } from 'react-router-dom';
 import { REDIRECTS, ROUTES } from '../../constants';
 import { useTranslation } from 'react-i18next';
 import FormInput from '../../components/form-input/form-input';
+import LoaderDrawer from '../../components/loader-drawer/loader-drawer';
 
 const SignIn = () => {
   const { t } = useTranslation();
   const history = useHistory();
-  const currentUser = useContext(UserContext);
+  const { currentUser, setCurrentUser } = useContext(UserContext)!;
 
   useEffect(() => {
     if (currentUser) {
@@ -34,29 +35,37 @@ const SignIn = () => {
       <Formik
         initialValues={{ email: '', password: '' }}
         onSubmit={async ({ email, password }) => {
-          await signInWithEmailAndPassword(email, password);
+          const userData = await signInWithEmailAndPassword(email, password);
+          setCurrentUser(userData);
         }}
       >
         {({ isSubmitting, handleSubmit }) => (
           <SignInForm onSubmit={handleSubmit}>
-            <h1>{t('signin')}</h1>
-            <span>
-              {t('noAccount.text')}
-              <Link to={ROUTES.signup}> {t('noAccount.link')}</Link>
-            </span>
-            <FormInput type='text' name='email' required label={t('email')!} />
-            <FormInput
-              type='password'
-              name='password'
-              required
-              label={t('password')}
-            />
-            <SubmitButton disabled={isSubmitting} value={t('signin')!} />
-            <Separator />
-            <GoogleButton
-              onClick={signInWithGoogle}
-              value={t('signInWithGoogle')!}
-            />
+            <LoaderDrawer visible={isSubmitting}>
+              <h1>{t('signin')}</h1>
+              <span>
+                {t('noAccount.text')}
+                <Link to={ROUTES.signup}> {t('noAccount.link')}</Link>
+              </span>
+              <FormInput
+                type='text'
+                name='email'
+                required
+                label={t('email')!}
+              />
+              <FormInput
+                type='password'
+                name='password'
+                required
+                label={t('password')}
+              />
+              <SubmitButton disabled={isSubmitting} value={t('signin')!} />
+              <Separator />
+              <GoogleButton
+                onClick={signInWithGoogle}
+                value={t('signInWithGoogle')!}
+              />
+            </LoaderDrawer>
           </SignInForm>
         )}
       </Formik>
